@@ -1,28 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --blueprint-navy: #0d1526;
-  --blueprint-navy-deep: #080d19;
-  --grid-line: #223054;
-  --linework: #dbe6f5;
-  --linework-dim: #9fb3d6;
-  --slate: #7c8ba8;
-  --signal-amber: #ff8a3d;
-  --signal-amber-dim: #c96a2c;
+  --ink: #0a0b10;
+  --panel: #13151d;
+  --panel-hover: #191c27;
+  --hairline: #262a38;
+  --text: #e9ebf3;
+  --text-dim: #8b92a8;
+  --signal: #5eead4;
+  --signal-dim: #2fb8a6;
+  --warm: #ff6f91;
 }
 
 @theme inline {
-  --color-navy: var(--blueprint-navy);
-  --color-navy-deep: var(--blueprint-navy-deep);
-  --color-grid: var(--grid-line);
-  --color-linework: var(--linework);
-  --color-linework-dim: var(--linework-dim);
-  --color-slate: var(--slate);
-  --color-amber: var(--signal-amber);
-  --color-amber-dim: var(--signal-amber-dim);
-  --font-display: var(--font-big-shoulders);
-  --font-sans: var(--font-plex-sans);
-  --font-mono: var(--font-plex-mono);
+  --color-ink: var(--ink);
+  --color-panel: var(--panel);
+  --color-panel-hover: var(--panel-hover);
+  --color-hairline: var(--hairline);
+  --color-text: var(--text);
+  --color-text-dim: var(--text-dim);
+  --color-signal: var(--signal);
+  --color-signal-dim: var(--signal-dim);
+  --color-warm: var(--warm);
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-manrope);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 * {
@@ -34,65 +36,84 @@ html {
 }
 
 body {
-  background: var(--blueprint-navy);
-  color: var(--linework);
-  font-family: var(--font-plex-sans), sans-serif;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-manrope), sans-serif;
+  background-image: radial-gradient(circle at 15% 0%, rgba(94, 234, 212, 0.08), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255, 111, 145, 0.06), transparent 40%);
+  background-attachment: fixed;
 }
 
-/* Blueprint grid backdrop */
-.bp-grid {
-  background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-/* Corner registration marks — the recurring "drawing sheet" motif */
-.bp-sheet {
+/* Live status pulse — the recurring signature motif */
+.pulse-dot {
   position: relative;
-  border: 1px solid var(--grid-line);
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--signal);
+  flex-shrink: 0;
 }
 
-.bp-sheet::before,
-.bp-sheet::after,
-.bp-sheet .bp-corner-tl,
-.bp-sheet .bp-corner-br {
+.pulse-dot::after {
   content: "";
   position: absolute;
-  width: 14px;
-  height: 14px;
-  pointer-events: none;
+  inset: -4px;
+  border-radius: 999px;
+  background: var(--signal);
+  opacity: 0.35;
+  animation: pulse-ring 2.2s ease-out infinite;
 }
 
-.bp-sheet::before {
-  top: -1px;
-  left: -1px;
-  border-top: 2px solid var(--signal-amber);
-  border-left: 2px solid var(--signal-amber);
-  opacity: 0.55;
-  transition: opacity 0.25s ease;
+.pulse-dot.warm {
+  background: var(--warm);
+}
+.pulse-dot.warm::after {
+  background: var(--warm);
 }
 
-.bp-sheet::after {
-  bottom: -1px;
-  right: -1px;
-  border-bottom: 2px solid var(--signal-amber);
-  border-right: 2px solid var(--signal-amber);
-  opacity: 0.55;
-  transition: opacity 0.25s ease;
+.pulse-dot.idle {
+  background: var(--text-dim);
+}
+.pulse-dot.idle::after {
+  display: none;
 }
 
-.bp-sheet:hover::before,
-.bp-sheet:hover::after {
-  opacity: 1;
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.card-panel {
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+}
+
+.card-panel:hover {
+  border-color: rgba(94, 234, 212, 0.4);
+  background: var(--panel-hover);
+  transform: translateY(-2px);
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+  .pulse-dot::after {
+    animation: none;
+  }
+  .card-panel:hover {
+    transform: none;
+  }
   * {
-    animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
   }
 }
