@@ -2,18 +2,12 @@ type Project = {
   title: string;
   tags: string[];
   spec: string;
-  status: "live" | "private";
+  status: "live" | "public" | "private";
   repoUrl?: string;
   demoUrl?: string;
 };
 
 const projects: Project[] = [
-  {
-    title: "Network Observatory",
-    tags: ["Python", "OpenWrt", "Security"],
-    spec: "AI-assisted network monitoring and remediation for OpenWrt — log analysis, settings audits, threat detection, and safe command-execution gates before anything touches production.",
-    status: "private",
-  },
   {
     title: "Document Analysis Engine",
     tags: ["FastAPI", "Streamlit", "RAG", "Agents"],
@@ -23,6 +17,26 @@ const projects: Project[] = [
     demoUrl: "https://document-analysis-engine-sfnomhnlrsnbnmrukcffr7.streamlit.app",
   },
   {
+    title: "Memory Graph Library",
+    tags: ["Python", "FastAPI", "Neo4j", "Agents"],
+    spec: "A graph-native memory layer for AI agents — hybrid vector, fulltext, and graph retrieval, with a full memory lifecycle (ingest, reflect, promote, archive) instead of stuffing everything into a prompt.",
+    status: "public",
+    repoUrl: "https://github.com/Yamai7354/memory-graph-library",
+  },
+  {
+    title: "Network Observatory",
+    tags: ["Python", "OpenWrt", "Security"],
+    spec: "AI-assisted network monitoring and remediation for OpenWrt — log analysis, settings audits, threat detection, and safe command-execution gates before anything touches production.",
+    status: "private",
+  },
+  {
+    title: "Market Scout",
+    tags: ["Python", "FastAPI", "Automation"],
+    spec: "Scans my own project portfolio for reusable proof, scores product and market opportunities against what I've actually built, and turns job leads and market signals into a prioritized action queue.",
+    status: "public",
+    repoUrl: "https://github.com/Yamai7354/market-scout",
+  },
+  {
     title: "Foreman",
     tags: ["Python", "CLI", "SQLite"],
     spec: "A developer workflow CLI — work-session tracking, auto-generated docs and architecture diagrams, and GitHub repo scaffolding, backed by SQLite instead of loose files.",
@@ -30,11 +44,17 @@ const projects: Project[] = [
   },
 ];
 
-function StatusBadge({ status }: { status: "live" | "private" }) {
+const STATUS_LABEL: Record<Project["status"], string> = {
+  live: "Live",
+  public: "Public repo",
+  private: "Private repo",
+};
+
+function StatusBadge({ status }: { status: Project["status"] }) {
   return (
     <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-text-dim">
       <span className={`pulse-dot ${status === "live" ? "" : "idle"}`} />
-      {status === "live" ? "Live" : "Private repo"}
+      {STATUS_LABEL[status]}
     </span>
   );
 }
@@ -208,10 +228,10 @@ export default function Home() {
             Let&apos;s build something
           </h2>
           <a
-            href="mailto:Randy.johnson7354@outlook.com"
+            href="mailto:randy.johnson@yamaiportfolio.com"
             className="font-mono text-lg text-text hover:text-signal transition-colors underline underline-offset-4"
           >
-            Randy.johnson7354@outlook.com
+            randy.johnson@yamaiportfolio.com
           </a>
           <div className="mt-16 pt-6 border-t border-hairline flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-widest text-text-dim">
             <span>© 2026 Randy Johnson</span>
