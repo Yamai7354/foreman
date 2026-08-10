@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+:root {
+  --blueprint-navy: #0d1526;
+  --blueprint-navy-deep: #080d19;
+  --grid-line: #223054;
+  --linework: #dbe6f5;
+  --linework-dim: #9fb3d6;
+  --slate: #7c8ba8;
+  --signal-amber: #ff8a3d;
+  --signal-amber-dim: #c96a2c;
+}
+
+@theme inline {
+  --color-navy: var(--blueprint-navy);
+  --color-navy-deep: var(--blueprint-navy-deep);
+  --color-grid: var(--grid-line);
+  --color-linework: var(--linework);
+  --color-linework-dim: var(--linework-dim);
+  --color-slate: var(--slate);
+  --color-amber: var(--signal-amber);
+  --color-amber-dim: var(--signal-amber-dim);
+  --font-display: var(--font-big-shoulders);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--blueprint-navy);
+  color: var(--linework);
+  font-family: var(--font-plex-sans), sans-serif;
+}
+
+/* Blueprint grid backdrop */
+.bp-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Corner registration marks — the recurring "drawing sheet" motif */
+.bp-sheet {
+  position: relative;
+  border: 1px solid var(--grid-line);
+}
+
+.bp-sheet::before,
+.bp-sheet::after,
+.bp-sheet .bp-corner-tl,
+.bp-sheet .bp-corner-br {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.bp-sheet::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--signal-amber);
+  border-left: 2px solid var(--signal-amber);
+  opacity: 0.55;
+  transition: opacity 0.25s ease;
+}
+
+.bp-sheet::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--signal-amber);
+  border-right: 2px solid var(--signal-amber);
+  opacity: 0.55;
+  transition: opacity 0.25s ease;
+}
+
+.bp-sheet:hover::before,
+.bp-sheet:hover::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
