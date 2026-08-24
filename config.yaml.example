@@ -1,6 +1,0 @@
-author_email: you@example.com
-author_name: Your Name
-github_username: your-github-username
-llm_base_url: http://localhost:5001/v1
-llm_enabled: true
-llm_model: local-model
