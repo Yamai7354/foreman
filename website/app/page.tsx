@@ -59,7 +59,8 @@ const projects: Project[] = [
     title: "Foreman",
     tags: ["Python", "CLI", "SQLite"],
     spec: "A developer workflow CLI — work-session tracking, auto-generated docs and architecture diagrams, and GitHub repo scaffolding, backed by SQLite instead of loose files.",
-    status: "private",
+    status: "public",
+    repoUrl: "https://github.com/Yamai7354/foreman-cli",
   },
 ];
 
@@ -174,7 +175,7 @@ export default function Home() {
 
       <section className="proof-strip" aria-label="Portfolio facts">
         <div><strong>08</strong><span>built systems</span></div>
-        <div><strong>03</strong><span>public repositories</span></div>
+        <div><strong>04</strong><span>public repositories</span></div>
         <div><strong>01</strong><span>live product demo</span></div>
         <p>Working systems,<br />not slideware.</p>
       </section>
