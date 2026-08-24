@@ -20,6 +20,16 @@ type ProjectEvidence = {
   repoUrl?: string;
 };
 
+type Service = {
+  mode: string;
+  title: string;
+  summary: string;
+  fit: string;
+  deliverable: string;
+  shape: string;
+  featured?: boolean;
+};
+
 const projects: Project[] = [
   {
     title: "Document Analysis Engine",
@@ -50,16 +60,18 @@ const projects: Project[] = [
     repoUrl: "https://github.com/Yamai7354/market-scout",
   },
   {
-    title: "Agent Runtime",
+    title: "Modular Agent Runtime",
     tags: ["Python", "Orchestration", "FastAPI"],
     spec: "A modular, project-agnostic runtime for AI agents — model routing, tool execution, policy enforcement, and child-agent delegation, so an application only has to own its domain logic, not execution mechanics.",
-    status: "private",
+    status: "public",
+    repoUrl: "https://github.com/Yamai7354/mar",
   },
   {
     title: "Knowledge Graph Kernel",
     tags: ["Python", "Knowledge Graph", "Infrastructure"],
     spec: "An event-sourced, bi-temporal knowledge graph kernel for AI agent memory — immutable assertions with full retraction lineage, epistemic reasoning, hybrid retrieval, and multi-hop pathfinding.",
-    status: "private",
+    status: "public",
+    repoUrl: "https://github.com/Yamai7354/kgk",
   },
   {
     title: "Pipeline Tracker",
@@ -107,6 +119,7 @@ const projectEvidence: ProjectEvidence[] = [
     alt: "Knowledge Graph Kernel OpenAPI interface with the statement ingestion schema expanded",
     width: 1440,
     height: 1100,
+    repoUrl: "https://github.com/Yamai7354/kgk",
   },
   {
     title: "Foreman",
@@ -117,6 +130,34 @@ const projectEvidence: ProjectEvidence[] = [
     width: 1200,
     height: 820,
     repoUrl: "https://github.com/Yamai7354/foreman-cli",
+  },
+];
+
+const services: Service[] = [
+  {
+    mode: "Diagnose",
+    title: "AI workflow audit",
+    summary: "Find the part of a workflow where automation would actually remove friction — and where it would only add risk.",
+    fit: "A repetitive process, scattered information, or an AI prototype that never became dependable.",
+    deliverable: "A grounded workflow map, opportunity assessment, risk boundaries, and a build recommendation.",
+    shape: "Short diagnostic",
+  },
+  {
+    mode: "Build",
+    title: "Document intelligence pilot",
+    summary: "Turn a real document set into a private, citation-backed assistant that shows how every answer was formed.",
+    fit: "Teams repeatedly searching policies, reports, research, procedures, or client knowledge.",
+    deliverable: "A working pilot with retrieval, citations, source controls, and a clear path to production.",
+    shape: "Fixed-scope pilot",
+    featured: true,
+  },
+  {
+    mode: "Integrate",
+    title: "Agent and automation integration",
+    summary: "Connect retrieval, tools, APIs, and approval gates to an existing product or internal workflow.",
+    fit: "A useful prototype that now needs reliable execution, observable decisions, and human control.",
+    deliverable: "A scoped integration with explicit failure states, validation, and maintainable handoff documentation.",
+    shape: "Scoped engagement",
   },
 ];
 
@@ -212,7 +253,7 @@ export default function Home() {
     <main id="top">
       <header className="site-header">
         <a href="#top" className="wordmark" aria-label="Randy Johnson, back to top"><span>RJ</span><strong>Randy Johnson</strong></a>
-        <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#approach">Approach</a><a href="#contact">Contact</a></nav>
+        <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#services">Services</a><a href="#approach">Approach</a><a href="#contact">Contact</a></nav>
         <a className="availability" href="#contact"><i aria-hidden="true" /> Available</a>
       </header>
 
@@ -231,7 +272,7 @@ export default function Home() {
 
       <section className="proof-strip" aria-label="Portfolio facts">
         <div><strong>08</strong><span>built systems</span></div>
-        <div><strong>03</strong><span>public repositories</span></div>
+        <div><strong>07</strong><span>public repositories</span></div>
         <div><strong>02</strong><span>live product demos</span></div>
         <p>Working systems,<br />not slideware.</p>
       </section>
@@ -291,6 +332,31 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="services" className="services-section">
+        <div className="services-heading">
+          <p className="eyebrow">Ways to work together</p>
+          <h2>Start with a bounded problem.</h2>
+          <p>No open-ended transformation pitch. Choose the smallest engagement that can produce useful evidence and a responsible next decision.</p>
+        </div>
+        <div className="service-grid">
+          {services.map((service) => (
+            <article className={`service-card${service.featured ? " service-card-featured" : ""}`} key={service.mode}>
+              <div className="service-meta"><span>{service.mode}</span><span>{service.shape}</span></div>
+              <h3>{service.title}</h3>
+              <p className="service-summary">{service.summary}</p>
+              <dl>
+                <div><dt>Good fit</dt><dd>{service.fit}</dd></div>
+                <div><dt>You get</dt><dd>{service.deliverable}</dd></div>
+              </dl>
+              <a className="service-link" href={`mailto:randy.johnson@yamaiportfolio.com?subject=${encodeURIComponent(service.title)}`}>
+                Discuss this engagement <span aria-hidden="true">↗</span>
+              </a>
+            </article>
+          ))}
+        </div>
+        <p className="services-note"><span>Working rule</span> Every engagement keeps sources visible, decisions inspectable, and consequential actions behind explicit approval.</p>
+      </section>
+
       <section id="approach" className="approach-section">
         <div className="section-heading approach-heading"><p className="eyebrow">How I build</p><h2>The prototype is only the opening move.</h2></div>
         <div className="principles">
@@ -303,7 +369,7 @@ export default function Home() {
       <footer id="contact" className="contact-section">
         <div className="contact-kicker"><i aria-hidden="true" /> Available for new projects</div>
         <h2>Have a workflow that should work better?</h2>
-        <p>Tell me where the friction is. I’ll tell you honestly whether AI belongs in the solution.</p>
+        <p>Start with the friction, not an AI shopping list. I’ll help scope the smallest useful audit, pilot, or integration.</p>
         <a href="mailto:randy.johnson@yamaiportfolio.com" className="contact-email">randy.johnson@yamaiportfolio.com <span aria-hidden="true">↗</span></a>
         <div className="footer-line"><span>© 2026 Randy Johnson</span><span>AI agents · automation · document intelligence</span><a href="#top">Back to top ↑</a></div>
       </footer>
