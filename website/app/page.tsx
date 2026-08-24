@@ -65,8 +65,9 @@ const projects: Project[] = [
     title: "Pipeline Tracker",
     tags: ["Python", "FastAPI", "SQLite"],
     spec: "A local-first CRM for freelance pipelines — a Kanban board over SQLite with suggest-and-confirm automations: stale-lead alerts, LLM-drafted follow-ups, and stage-change suggestions. Nothing moves without a human confirming it.",
-    status: "public",
+    status: "live",
     repoUrl: "https://github.com/Yamai7354/pipeline-tracker",
+    demoUrl: "https://pipeline-tracker-demo.onrender.com",
   },
   {
     title: "Foreman",
@@ -230,8 +231,8 @@ export default function Home() {
 
       <section className="proof-strip" aria-label="Portfolio facts">
         <div><strong>08</strong><span>built systems</span></div>
-        <div><strong>04</strong><span>public repositories</span></div>
-        <div><strong>01</strong><span>live product demo</span></div>
+        <div><strong>03</strong><span>public repositories</span></div>
+        <div><strong>02</strong><span>live product demos</span></div>
         <p>Working systems,<br />not slideware.</p>
       </section>
 
