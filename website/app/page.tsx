@@ -37,6 +37,18 @@ const projects: Project[] = [
     repoUrl: "https://github.com/Yamai7354/market-scout",
   },
   {
+    title: "Agent Runtime",
+    tags: ["Python", "Orchestration", "FastAPI"],
+    spec: "A modular, project-agnostic runtime for AI agents — model routing, tool execution, policy enforcement, and child-agent delegation, so an application only has to own its domain logic, not execution mechanics.",
+    status: "private",
+  },
+  {
+    title: "Knowledge Graph Kernel",
+    tags: ["Python", "Knowledge Graph", "Infrastructure"],
+    spec: "An event-sourced, bi-temporal knowledge graph kernel for AI agent memory — immutable assertions with full retraction lineage, epistemic reasoning (facts vs. beliefs vs. rumors), and hybrid lexical/vector retrieval with multi-hop pathfinding. Plugs into Agent Runtime as its memory backend.",
+    status: "private",
+  },
+  {
     title: "Foreman",
     tags: ["Python", "CLI", "SQLite"],
     spec: "A developer workflow CLI — work-session tracking, auto-generated docs and architecture diagrams, and GitHub repo scaffolding, backed by SQLite instead of loose files.",
