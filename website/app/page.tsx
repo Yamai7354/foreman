@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type Project = {
   title: string;
   tags: string[];
@@ -5,6 +7,17 @@ type Project = {
   status: "live" | "public" | "private";
   repoUrl?: string;
   demoUrl?: string;
+};
+
+type ProjectEvidence = {
+  title: string;
+  label: string;
+  note: string;
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  repoUrl?: string;
 };
 
 const projects: Project[] = [
@@ -60,6 +73,48 @@ const projects: Project[] = [
     tags: ["Python", "CLI", "SQLite"],
     spec: "A developer workflow CLI — work-session tracking, auto-generated docs and architecture diagrams, and GitHub repo scaffolding, backed by SQLite instead of loose files.",
     status: "public",
+    repoUrl: "https://github.com/Yamai7354/foreman-cli",
+  },
+];
+
+const projectEvidence: ProjectEvidence[] = [
+  {
+    title: "Memory Graph Library",
+    label: "Product overview",
+    note: "The real operator-facing overview: hybrid retrieval, scoped memory, lifecycle governance, and explainability.",
+    src: "/projects/memory-graph-library.png",
+    alt: "Memory Graph Library product overview showing graph-native memory features and operator controls",
+    width: 1440,
+    height: 1050,
+    repoUrl: "https://github.com/Yamai7354/memory-graph-library",
+  },
+  {
+    title: "Market Scout",
+    label: "Live local dashboard",
+    note: "A current 111-project scan with candidate scoring, skills coverage, release gaps, and human-reviewed next steps.",
+    src: "/projects/market-scout.png",
+    alt: "Market Scout dashboard showing project candidates, release readiness, skills, and market signals",
+    width: 1440,
+    height: 1100,
+    repoUrl: "https://github.com/Yamai7354/market-scout",
+  },
+  {
+    title: "Knowledge Graph Kernel",
+    label: "Running API surface",
+    note: "The real FastAPI contract with provenance-aware statement ingestion expanded in the OpenAPI interface.",
+    src: "/projects/knowledge-graph-kernel.png",
+    alt: "Knowledge Graph Kernel OpenAPI interface with the statement ingestion schema expanded",
+    width: 1440,
+    height: 1100,
+  },
+  {
+    title: "Foreman",
+    label: "CLI capture",
+    note: "Actual CLI output for project documentation, diagrams, reports, GitHub setup, and work-session tracking.",
+    src: "/projects/foreman-terminal.png",
+    alt: "Foreman terminal showing its real command list and work-session status output",
+    width: 1200,
+    height: 820,
     repoUrl: "https://github.com/Yamai7354/foreman-cli",
   },
 ];
@@ -187,6 +242,36 @@ export default function Home() {
           <p>Each project solves a real systems problem: retrieval, orchestration, safety, memory, or the operating layer around them.</p>
         </div>
         <FeaturedProject project={featured} />
+
+        <section className="evidence-section" aria-labelledby="evidence-title">
+          <div className="evidence-heading">
+            <p className="eyebrow">Project evidence</p>
+            <h3 id="evidence-title">Captured from the actual systems.</h3>
+            <p>Real interfaces and command output from local runs — no concept screens or invented dashboards.</p>
+          </div>
+          <div className="evidence-grid">
+            {projectEvidence.map((item) => (
+              <figure className="evidence-card" key={item.title}>
+                <a className="evidence-image" href={item.src} target="_blank" rel="noopener noreferrer" aria-label={`Open full ${item.title} capture`}>
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={item.width}
+                    height={item.height}
+                    sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 560px"
+                  />
+                  <span>Open full capture ↗</span>
+                </a>
+                <figcaption>
+                  <div><small>{item.label}</small><h4>{item.title}</h4></div>
+                  <p>{item.note}</p>
+                  {item.repoUrl ? <ArrowLink href={item.repoUrl}>Repository</ArrowLink> : <span className="request-label">Private system</span>}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
         <div className="project-index">
           <div className="index-head"><span>Project</span><span>What it does</span><span>Stack / access</span></div>
           {projectIndex.map((project, index) => (
