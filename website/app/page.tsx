@@ -32,7 +32,7 @@ const projects: Project[] = [
   {
     title: "Market Scout",
     tags: ["Python", "FastAPI", "Automation"],
-    spec: "Scans my own project portfolio for reusable proof, scores product and market opportunities against what I've actually built, and turns job leads and market signals into a prioritized action queue.",
+    spec: "Scans my own project portfolio for reusable proof, scores product and market opportunities against what I’ve actually built, and turns job leads and market signals into a prioritized action queue.",
     status: "public",
     repoUrl: "https://github.com/Yamai7354/market-scout",
   },
@@ -45,7 +45,7 @@ const projects: Project[] = [
   {
     title: "Knowledge Graph Kernel",
     tags: ["Python", "Knowledge Graph", "Infrastructure"],
-    spec: "An event-sourced, bi-temporal knowledge graph kernel for AI agent memory — immutable assertions with full retraction lineage, epistemic reasoning (facts vs. beliefs vs. rumors), and hybrid lexical/vector retrieval with multi-hop pathfinding. Plugs into Agent Runtime as its memory backend.",
+    spec: "An event-sourced, bi-temporal knowledge graph kernel for AI agent memory — immutable assertions with full retraction lineage, epistemic reasoning, hybrid retrieval, and multi-hop pathfinding.",
     status: "private",
   },
   {
@@ -57,203 +57,162 @@ const projects: Project[] = [
 ];
 
 const STATUS_LABEL: Record<Project["status"], string> = {
-  live: "Live",
+  live: "Live demo",
   public: "Public repo",
-  private: "Private repo",
+  private: "Private system",
 };
 
 function StatusBadge({ status }: { status: Project["status"] }) {
   return (
-    <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-text-dim">
-      <span className={`pulse-dot ${status === "live" ? "" : "idle"}`} />
+    <span className={`status-badge status-${status}`}>
+      <span className="status-dot" aria-hidden="true" />
       {STATUS_LABEL[status]}
     </span>
   );
 }
 
-export default function Home() {
+function ArrowLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const isExternal = href.startsWith("http");
   return (
-    <div className="flex-1">
-      {/* Nav */}
-      <header className="border-b border-hairline">
-        <div className="mx-auto max-w-5xl px-6 py-5 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-2.5 font-display font-semibold text-lg">
-            <span className="pulse-dot" />
-            Randy Johnson
-          </a>
-          <nav className="hidden sm:flex items-center gap-8 font-mono text-xs uppercase tracking-widest text-text-dim">
-            <a href="#work" className="hover:text-text transition-colors">Work</a>
-            <a href="#about" className="hover:text-text transition-colors">About</a>
-            <a href="#contact" className="hover:text-text transition-colors">Contact</a>
-          </nav>
+    <a href={href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined} className="arrow-link">
+      <span>{children}</span>
+      <span aria-hidden="true">↗</span>
+    </a>
+  );
+}
+
+function SystemTrace() {
+  return (
+    <aside className="trace-board" aria-label="An inspectable AI system flow">
+      <div className="trace-head">
+        <span>Production pattern</span>
+        <span className="trace-ready"><i aria-hidden="true" /> ready</span>
+      </div>
+      <div className="trace-stage trace-stage-input">
+        <span className="trace-index">01</span>
+        <div><strong>Ground the input</strong><small>Documents · workflows · source data</small></div>
+      </div>
+      <div className="trace-connector" aria-hidden="true"><span /></div>
+      <div className="trace-stage trace-stage-reason">
+        <span className="trace-index">02</span>
+        <div><strong>Make the decision visible</strong><small>Retrieval · routing · tool choice</small></div>
+      </div>
+      <div className="trace-connector" aria-hidden="true"><span /></div>
+      <div className="trace-stage trace-stage-control">
+        <span className="trace-index">03</span>
+        <div><strong>Keep a human in control</strong><small>Validation · policy · safe execution</small></div>
+      </div>
+      <div className="trace-foot">
+        <span>Input</span><span>Decision</span><span>Action</span><span>Evidence retained</span>
+      </div>
+    </aside>
+  );
+}
+
+function FeaturedProject({ project }: { project: Project }) {
+  return (
+    <article className="featured-project">
+      <div className="feature-copy">
+        <div className="feature-meta"><span>Featured build</span><StatusBadge status={project.status} /></div>
+        <h3>{project.title}</h3>
+        <p>{project.spec}</p>
+        <div className="tag-row">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+        <div className="link-row">
+          {project.repoUrl && <ArrowLink href={project.repoUrl}>View repository</ArrowLink>}
+          {project.demoUrl && <ArrowLink href={project.demoUrl}>Open live demo</ArrowLink>}
         </div>
+      </div>
+      <div className="feature-visual" aria-label="Document Analysis Engine flow">
+        <div className="visual-toolbar"><span /><span /><span /><small>document-analysis / run</small></div>
+        <div className="visual-canvas">
+          <div className="visual-node node-source"><small>source</small><strong>Uploaded docs</strong></div>
+          <div className="visual-line line-one" aria-hidden="true"><i /></div>
+          <div className="visual-node node-retrieve"><small>retrieve</small><strong>RAG search</strong></div>
+          <div className="visual-line line-two" aria-hidden="true"><i /></div>
+          <div className="visual-node node-agent"><small>reason</small><strong>Tool agent</strong></div>
+          <div className="visual-line line-three" aria-hidden="true"><i /></div>
+          <div className="visual-node node-output"><small>output</small><strong>Answers + charts</strong></div>
+        </div>
+        <div className="visual-log">
+          <span>01</span><code>knowledge_base.search</code><b>complete</b>
+          <span>02</span><code>chart.generate</code><b>validated</b>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export default function Home() {
+  const [featured, ...projectIndex] = projects;
+  return (
+    <main id="top">
+      <header className="site-header">
+        <a href="#top" className="wordmark" aria-label="Randy Johnson, back to top"><span>RJ</span><strong>Randy Johnson</strong></a>
+        <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#approach">Approach</a><a href="#contact">Contact</a></nav>
+        <a className="availability" href="#contact"><i aria-hidden="true" /> Available</a>
       </header>
 
-      {/* Hero */}
-      <section id="top" className="border-b border-hairline">
-        <div className="mx-auto max-w-5xl px-6 py-24 md:py-32">
-          <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-signal mb-8 border border-hairline rounded-full px-3 py-1.5">
-            <span className="pulse-dot" />
-            Available for new projects
-          </div>
-
-          <h1 className="font-display font-semibold leading-[1.05] text-5xl sm:text-6xl md:text-7xl tracking-tight">
-            AI systems that
-            <br />
-            <span className="text-signal">actually ship.</span>
-          </h1>
-
-          <p className="mt-8 max-w-xl text-lg text-text-dim leading-relaxed">
-            I design and build AI agents, automations, and document
-            intelligence for small and mid-size businesses — production
-            systems your team actually uses, not proof-of-concepts.
-          </p>
-
-          <div className="mt-10 flex flex-wrap gap-4">
-            <a
-              href="#work"
-              className="bg-signal text-ink font-mono text-sm font-semibold uppercase tracking-wide px-6 py-3 rounded-lg hover:bg-signal-dim transition-colors"
-            >
-              See the work
-            </a>
-            <a
-              href="#contact"
-              className="border border-hairline font-mono text-sm font-semibold uppercase tracking-wide px-6 py-3 rounded-lg hover:border-signal/50 transition-colors"
-            >
-              Get in touch
-            </a>
+      <section className="hero">
+        <div className="hero-copy">
+          <p className="eyebrow">Independent AI systems builder · Omaha, Nebraska</p>
+          <h1>AI demos are easy.<span>I build the part that has to keep working.</span></h1>
+          <p className="hero-deck">I turn documents, workflows, and operational knowledge into inspectable AI systems — with guardrails, provenance, and a human in control.</p>
+          <div className="hero-actions">
+            <a className="button button-primary" href="#work">Explore the work <span aria-hidden="true">↓</span></a>
+            <a className="button button-secondary" href="mailto:randy.johnson@yamaiportfolio.com">Start a conversation <span aria-hidden="true">↗</span></a>
           </div>
         </div>
+        <SystemTrace />
       </section>
 
-      {/* Projects */}
-      <section id="work" className="mx-auto max-w-5xl px-6 py-20 md:py-24">
-        <div className="font-mono text-xs uppercase tracking-widest text-text-dim mb-3">
-          Selected work
+      <section className="proof-strip" aria-label="Portfolio facts">
+        <div><strong>07</strong><span>built systems</span></div>
+        <div><strong>02</strong><span>public repositories</span></div>
+        <div><strong>01</strong><span>live product demo</span></div>
+        <p>Working systems,<br />not slideware.</p>
+      </section>
+
+      <section id="work" className="work-section">
+        <div className="section-heading">
+          <p className="eyebrow">Selected work</p>
+          <h2>Proof, not promises.</h2>
+          <p>Each project solves a real systems problem: retrieval, orchestration, safety, memory, or the operating layer around them.</p>
         </div>
-        <h2 className="font-display font-semibold text-3xl md:text-4xl tracking-tight mb-12">
-          Systems I&apos;ve built
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-4">
-          {projects.map((p) => (
-            <article
-              key={p.title}
-              className="card-panel rounded-xl p-6 flex flex-col"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <StatusBadge status={p.status} />
+        <FeaturedProject project={featured} />
+        <div className="project-index">
+          <div className="index-head"><span>Project</span><span>What it does</span><span>Stack / access</span></div>
+          {projectIndex.map((project, index) => (
+            <article className="project-row" key={project.title}>
+              <div className="project-title">
+                <span className="project-number">{String(index + 2).padStart(2, "0")}</span>
+                <div><h3>{project.title}</h3><StatusBadge status={project.status} /></div>
               </div>
-
-              <h3 className="font-display font-semibold text-xl mb-3">
-                {p.title}
-              </h3>
-
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {p.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-mono text-[10px] uppercase tracking-wide rounded-full border border-hairline px-2.5 py-1 text-text-dim"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <p className="text-sm text-text-dim leading-relaxed flex-1">
-                {p.spec}
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-4 font-mono text-xs uppercase tracking-widest">
-                {p.repoUrl && (
-                  <a
-                    href={p.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-signal hover:underline underline-offset-4"
-                  >
-                    Repo →
-                  </a>
-                )}
-                {p.demoUrl && (
-                  <a
-                    href={p.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-signal hover:underline underline-offset-4"
-                  >
-                    Live demo →
-                  </a>
-                )}
-                {!p.repoUrl && !p.demoUrl && (
-                  <span className="text-text-dim">Available on request</span>
-                )}
+              <p className="project-spec">{project.spec}</p>
+              <div className="project-access">
+                <div className="tag-row">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                {project.repoUrl ? <ArrowLink href={project.repoUrl}>Repository</ArrowLink> : <span className="request-label">Available on request</span>}
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      {/* About / capabilities */}
-      <section id="about" className="border-t border-hairline">
-        <div className="mx-auto max-w-5xl px-6 py-20 md:py-24 grid md:grid-cols-[1fr_auto] gap-12">
-          <div>
-            <div className="font-mono text-xs uppercase tracking-widest text-signal mb-3">
-              Capabilities
-            </div>
-            <h2 className="font-display font-semibold text-3xl md:text-4xl tracking-tight mb-6">
-              What I actually do
-            </h2>
-            <p className="max-w-2xl text-text-dim leading-relaxed">
-              I design and build AI systems for small and mid-size
-              businesses — automations that connect your existing tools,
-              chatbots and assistants trained on your business, and the
-              unglamorous infrastructure (monitoring, tooling, ops) that
-              keeps it all running. If it needs to work in production, not
-              just in a demo, that&apos;s the job.
-            </p>
-          </div>
-          <dl className="font-mono text-xs uppercase tracking-widest space-y-5 self-start md:border-l md:border-hairline md:pl-8">
-            <div>
-              <dt className="text-text-dim">Stack</dt>
-              <dd className="text-text mt-1.5 normal-case">Python, FastAPI, Next.js, SQLite/Postgres, LangChain</dd>
-            </div>
-            <div>
-              <dt className="text-text-dim">Focus</dt>
-              <dd className="text-text mt-1.5 normal-case">AI agents · automation · document intelligence</dd>
-            </div>
-            <div>
-              <dt className="text-text-dim">Based in</dt>
-              <dd className="text-text mt-1.5 normal-case">Omaha, Nebraska</dd>
-            </div>
-          </dl>
+      <section id="approach" className="approach-section">
+        <div className="section-heading approach-heading"><p className="eyebrow">How I build</p><h2>The prototype is only the opening move.</h2></div>
+        <div className="principles">
+          <article><span>Inputs</span><h3>Start with the source.</h3><p>Ground the system in the documents, workflows, and facts the business already trusts.</p></article>
+          <article><span>Decisions</span><h3>Expose the machinery.</h3><p>Make retrieval, routing, tool use, and failure states visible enough to inspect and improve.</p></article>
+          <article><span>Actions</span><h3>Keep control explicit.</h3><p>Put validation and approval boundaries between a confident model and a consequential action.</p></article>
         </div>
       </section>
 
-      {/* Contact / footer */}
-      <footer id="contact" className="border-t border-hairline">
-        <div className="mx-auto max-w-5xl px-6 py-16 md:py-20">
-          <div className="font-mono text-xs uppercase tracking-widest text-signal mb-3">
-            Get in touch
-          </div>
-          <h2 className="font-display font-semibold text-3xl md:text-4xl tracking-tight mb-6">
-            Let&apos;s build something
-          </h2>
-          <a
-            href="mailto:randy.johnson@yamaiportfolio.com"
-            className="font-mono text-lg text-text hover:text-signal transition-colors underline underline-offset-4"
-          >
-            randy.johnson@yamaiportfolio.com
-          </a>
-          <div className="mt-16 pt-6 border-t border-hairline flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-widest text-text-dim">
-            <span>© 2026 Randy Johnson</span>
-            <span className="inline-flex items-center gap-2">
-              <span className="pulse-dot" />
-              All systems operational
-            </span>
-          </div>
-        </div>
+      <footer id="contact" className="contact-section">
+        <div className="contact-kicker"><i aria-hidden="true" /> Available for new projects</div>
+        <h2>Have a workflow that should work better?</h2>
+        <p>Tell me where the friction is. I’ll tell you honestly whether AI belongs in the solution.</p>
+        <a href="mailto:randy.johnson@yamaiportfolio.com" className="contact-email">randy.johnson@yamaiportfolio.com <span aria-hidden="true">↗</span></a>
+        <div className="footer-line"><span>© 2026 Randy Johnson</span><span>AI agents · automation · document intelligence</span><a href="#top">Back to top ↑</a></div>
       </footer>
-    </div>
+    </main>
   );
 }
