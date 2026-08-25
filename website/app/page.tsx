@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 type Project = {
   title: string;
@@ -371,7 +372,11 @@ export default function Home() {
         <h2>Have a workflow that should work better?</h2>
         <p>Start with the friction, not an AI shopping list. I’ll help scope the smallest useful audit, pilot, or integration.</p>
         <a href="mailto:randy.johnson@yamaiportfolio.com" className="contact-email">randy.johnson@yamaiportfolio.com <span aria-hidden="true">↗</span></a>
-        <div className="footer-line"><span>© 2026 Randy Johnson</span><span>AI agents · automation · document intelligence</span><a href="#top">Back to top ↑</a></div>
+        <div className="footer-line">
+          <span>© 2026 Randy Johnson</span>
+          <span>AI agents · automation · document intelligence</span>
+          <div className="footer-links"><Link href="/terms">Terms</Link><a href="#top">Back to top ↑</a></div>
+        </div>
       </footer>
     </main>
   );
